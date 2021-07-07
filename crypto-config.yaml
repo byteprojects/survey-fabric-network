@@ -1,0 +1,15 @@
+OrdererOrgs:
+  - Name: Orderer
+    Domain: livwell.com
+    Specs:
+      - Hostname: orderer
+      - Hostname: orderer2
+      - Hostname: orderer3
+PeerOrgs:
+  - Name: care
+    Domain: care.livwell.com
+    EnableNodeOUs: true
+    Template:
+        Count: 1
+    Users:
+        Count: 1
