@@ -6,8 +6,8 @@ OrdererOrgs:
       - Hostname: orderer2
       - Hostname: orderer3
 PeerOrgs:
-  - Name: care
-    Domain: care.livwell.com
+  - Name: allparticipants
+    Domain: allparticipants.livwell.com
     EnableNodeOUs: true
     Template:
         Count: 1

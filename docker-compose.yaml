@@ -1,8 +1,8 @@
 version: '2'
 
 volumes:
-  peer0.care.livwell.com:
-  peer1.care.livwell.com:
+  peer0.allparticipants.livwell.com:
+  peer1.allparticipants.livwell.com:
   orderer.livwell.com:
   orderer2.livwell.com:
   orderer3.livwell.com:
@@ -32,26 +32,26 @@ services:
     networks:
       - claimsnetwork
   
-  ca.care.livwell.com:
-    container_name: ca.care.livwell.com
+  ca.allparticipants.livwell.com:
+    container_name: ca.allparticipants.livwell.com
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
     environment: 
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.care.livwell.com
+      - FABRIC_CA_SERVER_CA_NAME=ca.allparticipants.livwell.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=7054
-      # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.care.livwell.com-cert.pem
+      # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.allparticipants.livwell.com-cert.pem
       # - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d '
     volumes:
-      - ./crypto-config/peerOrganizations/care.livwell.com/ca/:/etc/hyperledger/fabric-ca-server
+      - ./crypto-config/peerOrganizations/allparticipants.livwell.com/ca/:/etc/hyperledger/fabric-ca-server
     networks:
       - claimsnetwork
 
-  peer0.care.livwell.com:
-    container_name: peer0.care.livwell.com
+  peer0.allparticipants.livwell.com:
+    container_name: peer0.allparticipants.livwell.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -67,26 +67,26 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
        # Allow more time for chaincode container to build on install.
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
-      - CORE_PEER_ID=peer0.care.livwell.com
-      - CORE_PEER_ADDRESS=peer0.care.livwell.com:7051
+      - CORE_PEER_ID=peer0.allparticipants.livwell.com
+      - CORE_PEER_ADDRESS=peer0.allparticipants.livwell.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.care.livwell.com:7053
+      - CORE_PEER_CHAINCODEADDRESS=peer0.allparticipants.livwell.com:7053
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7053
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.care.livwell.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.care.livwell.com:8051
-      - CORE_PEER_LOCALMSPID=careMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.allparticipants.livwell.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.allparticipants.livwell.com:8051
+      - CORE_PEER_LOCALMSPID=allparticipantsMSP
       # Setting-up CouchDB as State Database
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.care.livwell.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.allparticipants.livwell.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0_admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer0_adminpw
       - CORE_METRICS_PROVIDER=prometheus
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/care.livwell.com/peers/peer0.care.livwell.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/care.livwell.com/peers/peer0.care.livwell.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
-        - peer0.care.livwell.com:/var/hyperledger/production
+        - peer0.allparticipants.livwell.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -94,8 +94,8 @@ services:
     networks:
       - claimsnetwork
   
-  peer1.care.livwell.com:
-    container_name: peer1.care.livwell.com
+  peer1.allparticipants.livwell.com:
+    container_name: peer1.allparticipants.livwell.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -111,26 +111,26 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
        # Allow more time for chaincode container to build on install.
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
-      - CORE_PEER_ID=peer1.care.livwell.com
-      - CORE_PEER_ADDRESS=peer1.care.livwell.com:8051
+      - CORE_PEER_ID=peer1.allparticipants.livwell.com
+      - CORE_PEER_ADDRESS=peer1.allparticipants.livwell.com:8051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
-      - CORE_PEER_CHAINCODEADDRESS=peer1.care.livwell.com:8053
+      - CORE_PEER_CHAINCODEADDRESS=peer1.allparticipants.livwell.com:8053
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8053
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.care.livwell.com:8051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.care.livwell.com:7051
-      - CORE_PEER_LOCALMSPID=careMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.allparticipants.livwell.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.allparticipants.livwell.com:7051
+      - CORE_PEER_LOCALMSPID=allparticipantsMSP
       # Setting-up CouchDB as State Database
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.care.livwell.com:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.allparticipants.livwell.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer1_admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer1_adminpw
       - CORE_METRICS_PROVIDER=prometheus
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/care.livwell.com/peers/peer1.care.livwell.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/care.livwell.com/peers/peer1.care.livwell.com/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/allparticipants.livwell.com/peers/peer1.allparticipants.livwell.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/allparticipants.livwell.com/peers/peer1.allparticipants.livwell.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
-        - peer1.care.livwell.com:/var/hyperledger/production
+        - peer1.allparticipants.livwell.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -138,8 +138,8 @@ services:
     networks:
       - claimsnetwork
 
-  couchdb.peer0.care.livwell.com:
-    container_name: couchdb.peer0.care.livwell.com
+  couchdb.peer0.allparticipants.livwell.com:
+    container_name: couchdb.peer0.allparticipants.livwell.com
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
     environment:
       - COUCHDB_USER=peer0_admin
@@ -151,8 +151,8 @@ services:
     networks:
       - claimsnetwork
   
-  couchdb.peer1.care.livwell.com:
-    container_name: couchdb.peer1.care.livwell.com
+  couchdb.peer1.allparticipants.livwell.com:
+    container_name: couchdb.peer1.allparticipants.livwell.com
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
@@ -274,8 +274,8 @@ services:
     networks:
       - claimsnetwork
 
-  cli.care.livwell.com:
-    container_name: cli.care.livwell.com
+  cli.allparticipants.livwell.com:
+    container_name: cli.allparticipants.livwell.com
     image: hyperledger/fabric-tools:$IMAGE_TAG
     tty: true
     stdin_open: true
@@ -284,13 +284,13 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.care.livwell.com:7051
-      - CORE_PEER_LOCALMSPID=careMSP
+      - CORE_PEER_ADDRESS=peer0.allparticipants.livwell.com:7051
+      - CORE_PEER_LOCALMSPID=allparticipantsMSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.com/peers/peer0.care.livwell.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.com/peers/peer0.care.livwell.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.com/peers/peer0.care.livwell.com/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.com/users/Admin@care.livwell.com/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/users/Admin@allparticipants.livwell.com/msp
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=claimsnetwork
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
@@ -300,10 +300,10 @@ services:
       - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
       - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
     depends_on:
-      - ca.care.livwell.com
-      - peer0.care.livwell.com
-      - peer1.care.livwell.com
-      - couchdb.peer0.care.livwell.com
-      - couchdb.peer1.care.livwell.com
+      - ca.allparticipants.livwell.com
+      - peer0.allparticipants.livwell.com
+      - peer1.allparticipants.livwell.com
+      - couchdb.peer0.allparticipants.livwell.com
+      - couchdb.peer1.allparticipants.livwell.com
     networks:
       - claimsnetwork

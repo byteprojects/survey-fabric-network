@@ -11,7 +11,7 @@
     docker-compose up
 
 ## Channel Setup
-    docker exec -it cli.care.livwell.com bash
+    docker exec -it cli.allparticipants.livwell.com bash
     cd scripts
     ./peer-channel-setup.sh
     ./installChaincode.sh
