@@ -1,0 +1,5 @@
+channel-artifacts/*
+crypto-config/*
+!channel-artifacts/.gitignore
+!crypto-config/.gitignore
+scripts/log.txt

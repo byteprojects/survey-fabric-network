@@ -1,7 +1,7 @@
 # Livwell Hyperledger Fabric Network
 
 ## Generate Crypto Materials
-    export PATH={PWD}/bin:$PATH
+    export PATH=${PWD}/bin:$PATH
     cryptogen generate -config crypto-config.yaml --output="crypto-config"
 
 ## Generate Channel-artifacts
