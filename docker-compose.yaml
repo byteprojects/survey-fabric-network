@@ -8,9 +8,9 @@ volumes:
   orderer3.livwell.com:
   
 networks:
-    wellness-network:
-    external:
-      name: wellness-network
+    wellness_network:
+      external:
+        name: wellness_network
 
 services:
   ca.livwell.com:
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./crypto-config/ordererOrganizations/livwell.com/ca/:/etc/hyperledger/fabric-ca-server
     networks:
-      - claimsnetwork
+      - wellness_network
   
   ca.allparticipants.livwell.com:
     container_name: ca.allparticipants.livwell.com
@@ -48,14 +48,14 @@ services:
     volumes:
       - ./crypto-config/peerOrganizations/allparticipants.livwell.com/ca/:/etc/hyperledger/fabric-ca-server
     networks:
-      - claimsnetwork
+      - wellness_network
 
   peer0.allparticipants.livwell.com:
     container_name: peer0.allparticipants.livwell.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=claimsnetwork
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=wellness_network
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
@@ -92,14 +92,14 @@ services:
     ports:
       - 7051:7051
     networks:
-      - claimsnetwork
+      - wellness_network
   
   peer1.allparticipants.livwell.com:
     container_name: peer1.allparticipants.livwell.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=claimsnetwork
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=wellness_network
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_TLS_ENABLED=true
@@ -136,7 +136,7 @@ services:
     ports:
       - 8051:8051
     networks:
-      - claimsnetwork
+      - wellness_network
 
   couchdb.peer0.allparticipants.livwell.com:
     container_name: couchdb.peer0.allparticipants.livwell.com
@@ -149,7 +149,7 @@ services:
     ports:
       - "5984:5984"
     networks:
-      - claimsnetwork
+      - wellness_network
   
   couchdb.peer1.allparticipants.livwell.com:
     container_name: couchdb.peer1.allparticipants.livwell.com
@@ -164,7 +164,7 @@ services:
     ports:
       - "6984:5984"
     networks:
-      - claimsnetwork
+      - wellness_network
 
   orderer.livwell.com:
     container_name: orderer.livwell.com
@@ -200,7 +200,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     networks:
-      - claimsnetwork
+      - wellness_network
   
   orderer2.livwell.com:
     container_name: orderer2.livwell.com
@@ -236,7 +236,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     networks:
-      - claimsnetwork
+      - wellness_network
   
   orderer3.livwell.com:
     container_name: orderer3.livwell.com
@@ -272,7 +272,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: orderer
     networks:
-      - claimsnetwork
+      - wellness_network
 
   cli.allparticipants.livwell.com:
     container_name: cli.allparticipants.livwell.com
@@ -291,7 +291,7 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/allparticipants.livwell.com/users/Admin@allparticipants.livwell.com/msp
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=claimsnetwork
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=wellness_network
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes: 
@@ -306,4 +306,4 @@ services:
       - couchdb.peer0.allparticipants.livwell.com
       - couchdb.peer1.allparticipants.livwell.com
     networks:
-      - claimsnetwork
+      - wellness_network
