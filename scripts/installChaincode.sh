@@ -2,20 +2,27 @@
 export BASE_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
 
 setChaincodeConfig() {  
-	echo "... Setting-up chaincode config"
+	# Setting-up chaincode config
     export FABRIC_CFG_PATH=/etc/hyperledger/fabric/
 	export CC_RUNTIME_LANGUAGE=golang; # either java, golang or node
     export CC_NAME=livwell_cc;
     export PACKAGE_NAME=livwell-chaincode
 	export CC_SRC_PATH=/opt/gopath/src/github.com/$PACKAGE_NAME;
 	export CHANNEL_NAME=master-channel;
-    export VERSION=11
-    export SEQUENCE_NO=2
+    export VERSION=${1:-"1.0"}
+    export SEQUENCE_NO=${2:-"1"}
     export CORE_PEER_TLS_ENABLED=true
-    
     export PRIVATE_DATA_CONFIG=/opt/gopath/src/github.com/${PACKAGE_NAME}/private_data_collections/collections_config.json
     export ORDERER_CA=${BASE_PATH}/ordererOrganizations/livwell.com/orderers/orderer.livwell.com/msp/tlscacerts/tlsca.livwell.com-cert.pem
     export PEER0_allparticipants_CA=${BASE_PATH}/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/ca.crt
+
+    echo "executing with the following"
+    echo "- CHANNEL_NAME: ${CHANNEL_NAME}"
+    echo "- CC_NAME: ${CC_NAME}"
+    echo "- CC_SRC_PATH: ${CC_SRC_PATH}"
+    echo "- CC_SRC_LANGUAGE: ${CC_RUNTIME_LANGUAGE}"
+    echo "- CC_SEQUENCE: ${SEQUENCE_NO}"
+    echo "- CC_VERSION: ${VERSION}"
 }
 
 setPeerEnvironment() {
@@ -151,12 +158,7 @@ queryChaincode() {
     peer chaincode query -C $CHANNEL_NAME -n $CC_NAME -c '{"Args":["readMarble","marble1"]}'
 }
 
-if [ "$1" = "-v" ]; then	
-    shift
-fi
-VERSION=$1;shift
-
-setChaincodeConfig
+setChaincodeConfig $1 $2
 
 echo "... packging chaincode"
 packageChaincode
