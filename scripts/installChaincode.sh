@@ -1,40 +1,32 @@
 # !/bin/bash
-export $BASE_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
+export BASE_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
 
 setChaincodeConfig() {  
 	echo "... Setting-up chaincode config"
     export FABRIC_CFG_PATH=/etc/hyperledger/fabric/
-	export CC_RUNTIME_LANGUAGE=node;
-    export CC_NAME=marblesnet;
-    export PACKAGE_NAME=marbles
+	export CC_RUNTIME_LANGUAGE=golang; # either java, golang or node
+    export CC_NAME=livwell_cc;
+    export PACKAGE_NAME=livwell-chaincode
 	export CC_SRC_PATH=/opt/gopath/src/github.com/$PACKAGE_NAME;
-	export CHANNEL_NAME=claimschannel;
-    export VERSION=1
-    export SEQUENCE_NO=1
+	export CHANNEL_NAME=master-channel;
+    export VERSION=11
+    export SEQUENCE_NO=2
     export CORE_PEER_TLS_ENABLED=true
-    export $BASE_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
     
-    export PRIVATE_DATA_CONFIG=/opt/gopath/src/github.com/${PACKAGE_NAME}/private_data_collection/collections_config.json
+    export PRIVATE_DATA_CONFIG=/opt/gopath/src/github.com/${PACKAGE_NAME}/private_data_collections/collections_config.json
     export ORDERER_CA=${BASE_PATH}/ordererOrganizations/livwell.com/orderers/orderer.livwell.com/msp/tlscacerts/tlsca.livwell.com-cert.pem
-    export PEER0_ORG1_CA=${BASE_PATH}/peerOrganizations/org1.livwell.com/peers/peer0.org1.livwell.com/tls/ca.crt
-    export PEER0_ORG2_CA=${BASE_PATH}/peerOrganizations/org2.livwell.com/peers/peer0.org2.livwell.com/tls/ca.crt
+    export PEER0_allparticipants_CA=${BASE_PATH}/peerOrganizations/allparticipants.livwell.com/peers/peer0.allparticipants.livwell.com/tls/ca.crt
 }
 
 setPeerEnvironment() {
   export CORE_PEER_MSPCONFIGPATH=${BASE_PATH}/peerOrganizations/$2.livwell.com/users/Admin@$2.livwell.com/msp
   export CORE_PEER_TLS_ROOTCERT_FILE=${BASE_PATH}/peerOrganizations/$2.livwell.com/peers/peer$1.$2.livwell.com/tls/ca.crt
   export CORE_PEER_LOCALMSPID=$2MSP
-  if [ $2 == "org1" ]; then
+  if [ $2 == "allparticipants" ]; then
     if [ $1 -eq 0 ]; then
       export CORE_PEER_ADDRESS=peer$1.$2.livwell.com:7051
     else
       export CORE_PEER_ADDRESS=peer$1.$2.livwell.com:8051
-    fi
-  elif [ $2 == "org2" ]; then
-    if [ $1 -eq 0 ]; then
-      export CORE_PEER_ADDRESS=peer$1.$2.livwell.com:9051
-    else
-      export CORE_PEER_ADDRESS=peer$1.$2.livwell.com:10051
     fi
   else
     echo $'\n'"Failure: Unknown organization provided!"$'\n'
@@ -45,7 +37,13 @@ setPeerEnvironment() {
 packageChaincode() {
     echo $'\n'""$'\n'
     echo $'\n'"Info: Packging chaincode !"$'\n'
-
+    
+    echo "Vendoring Go dependencies ..."
+	pushd $CC_SRC_PATH
+	GO111MODULE=on go mod vendor
+	popd
+	echo "Finished vendoring Go dependencies"
+    
     if ! peer lifecycle chaincode package ${CC_NAME}.tar.gz --path $CC_SRC_PATH --lang $CC_RUNTIME_LANGUAGE --label ${CC_NAME}_${VERSION}; then
         echo $'\n'"Failure: Failed packging chaincode!"$'\n'
         exit 1
@@ -68,7 +66,7 @@ queryInstalled() {
     cat log.txt
     PACKAGE_ID=$(sed -n "/${CC_NAME}_${VERSION}/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
     echo PackageID is ${PACKAGE_ID}
-    echo " ======= Query installed successful on peer0.org1 on channel ======= "
+    echo " ======= Query installed successful on peer0.allparticipants on channel ======= "
 }
 
 
@@ -102,8 +100,7 @@ commitChaincodeDefination() {
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         --channelID $CHANNEL_NAME --name ${CC_NAME} \
         --collections-config $PRIVATE_DATA_CONFIG \
-        --peerAddresses peer0.org1.livwell.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses peer0.org2.livwell.com:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        --peerAddresses peer0.allparticipants.livwell.com:7051 --tlsRootCertFiles $PEER0_allparticipants_CA \
         --version ${VERSION} --sequence ${SEQUENCE_NO} --init-required; then
         echo $'\n'"Failure: Error commiting chaincode!"$'\n'
         exit 1
@@ -120,8 +117,7 @@ initChaincode() {
     echo $'\n'"Info: Initializing chaincode !"$'\n'
     if ! peer chaincode invoke -o orderer.livwell.com:7050 --ordererTLSHostnameOverride orderer.livwell.com \
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${CC_NAME} \
-        --peerAddresses peer0.org1.livwell.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses peer0.org2.livwell.com:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        --peerAddresses peer0.allparticipants.livwell.com:7051 --tlsRootCertFiles $PEER0_allparticipants_CA \
         --isInit -c '{"function":"initLedger","Args":[]}'; then 
         echo $'\n'"Failure: Error initializing chaincode!"$'\n'
         exit 1 
@@ -135,8 +131,7 @@ invokeChaincode() {
         --tls $CORE_PEER_TLS_ENABLED \
         --cafile $ORDERER_CA \
         -C $CHANNEL_NAME -n ${CC_NAME}  \
-        --peerAddresses peer0.org1.livwell.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses peer0.org2.livwell.com:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        --peerAddresses peer0.allparticipants.livwell.com:7051 --tlsRootCertFiles $PEER0_allparticipants_CA \
         -c '{"function": "initMarble","Args":["marble1", "blue", "35", "tom"]}'
 
     ## Add private data
@@ -146,7 +141,7 @@ invokeChaincode() {
     #     --tls $CORE_PEER_TLS_ENABLED \
     #     --cafile $ORDERER_CA \
     #     -C $CHANNEL_NAME -n ${CC_NAME} \
-    #     --peerAddresses peer0.org1.livwell.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
+    #     --peerAddresses peer0.allparticipants.livwell.com:7051 --tlsRootCertFiles $PEER0_allparticipants_CA \
     #     -c '{"function": "createPrivateCar", "Args":[]}' \
     #     --transient "{\"car\":\"$CAR\"}"
 }
@@ -167,43 +162,30 @@ echo "... packging chaincode"
 packageChaincode
 echo " ======= Chaincode packaged successfully ======= "
 
-echo "... installing chaincode on org1"
-setPeerEnvironment 0 org1
+echo "... installing chaincode on allparticipants"
+setPeerEnvironment 0 allparticipants
 installChaincode
-echo " ======= Chaincode installed successfully on peer0.org1 ======= "
+echo " ======= Chaincode installed successfully on peer0.allparticipants ======= "
 
-setPeerEnvironment 1 org1
+setPeerEnvironment 1 allparticipants
 installChaincode
-echo " ======= Chaincode installed successfully on peer1.org1 ======= "
-
-echo "... installing chaincode on org2"
-setPeerEnvironment 0 org2
-installChaincode
-echo " ======= Chaincode installed successfully on peer0.org2 ======= "
-
-setPeerEnvironment 1 org2
-installChaincode
-echo " ======= Chaincode installed successfully on peer1.org2 ======= "
-
+echo " ======= Chaincode installed successfully on peer1.allparticipants ======= "
 echo "... querying chaincode"
-setPeerEnvironment 0 org1
+setPeerEnvironment 0 allparticipants
 queryInstalled
 
 echo "... approving chaincode"
-setPeerEnvironment 0 org1
+setPeerEnvironment 0 allparticipants
 approveChaincode
-echo " ======= Chaincode approved successfully by org1 ======= "
-
-setPeerEnvironment 0 org2
-approveChaincode
-echo " ======= Chaincode approved successfully by org2 ======= "
+echo " ======= Chaincode approved successfully by allparticipants ======= "
 
 echo "... commiting chaincode"
-setPeerEnvironment 0 org1
+setPeerEnvironment 0 allparticipants
 checkCommitReadyness
 commitChaincodeDefination
 queryCommitted    
 
 initChaincode
-invokeChaincode
-queryChaincode
+
+# invokeChaincode
+# queryChaincode
