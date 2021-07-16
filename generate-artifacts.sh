@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PATH=${PWD}/bin:$PATH
-export CHANNEL_NAME=master-channel
+export CHANNEL_NAME=wellness
 export CHANNEL_ID=system-channel
 export ORDERER_PROFILE=OrdererGenesis
 export CHANNEL_PROFILE=ChannelGenesis
@@ -61,4 +61,4 @@ updateAnchorPeerUpdate() {
 generateGenesisBlock
 generateChannelConfiguration
 
-updateAnchorPeerUpdate 'allparticipants'
+updateAnchorPeerUpdate 'care'

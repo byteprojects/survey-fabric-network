@@ -19,7 +19,7 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/livwell.com/msp
+        MSPDir: crypto-config/ordererOrganizations/livwell.asia/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -35,15 +35,15 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
 
-    - &allparticipants
+    - &care
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: allparticipantsMSP
+        Name: careMSP
 
         # ID to load the MSP definition as
-        ID: allparticipantsMSP
+        ID: careMSP
 
-        MSPDir: crypto-config/peerOrganizations/allparticipants.livwell.com/msp
+        MSPDir: crypto-config/peerOrganizations/care.livwell.asia/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -51,23 +51,23 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('allparticipantsMSP.admin', 'allparticipantsMSP.peer', 'allparticipantsMSP.client')"
+                Rule: "OR('careMSP.admin', 'careMSP.peer', 'careMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('allparticipantsMSP.admin', 'allparticipantsMSP.client')"
+                Rule: "OR('careMSP.admin', 'careMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('allparticipantsMSP.admin')"
+                Rule: "OR('careMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('allparticipantsMSP.peer')"
+                Rule: "OR('careMSP.peer')"
 
         # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.allparticipants.livwell.com
+            - Host: peer0.care.livwell.asia
               Port: 7051
 ################################################################################
 #
@@ -176,13 +176,13 @@ Orderer: &OrdererDefaults
 
     EtcdRaft:
         Consenters:
-        - Host: orderer.livwell.com
+        - Host: orderer.livwell.asia
           Port: 7050
-          ClientTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer.livwell.com/tls/server.crt
-          ServerTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer.livwell.com/tls/server.crt
+          ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
 
     Addresses:
-        - orderer.livwell.com:7050
+        - orderer.livwell.asia:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -273,7 +273,7 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *allparticipants
+                - *care
             Capabilities:
                 <<: *ApplicationCapabilities
 
@@ -286,22 +286,22 @@ Profiles:
             OrdererType: etcdraft
             EtcdRaft:
                 Consenters:
-                - Host: orderer.livwell.com
+                - Host: orderer.livwell.asia
                   Port: 7050
-                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer.livwell.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer.livwell.com/tls/server.crt
-                - Host: orderer2.livwell.com
+                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
+                - Host: orderer2.livwell.asia
                   Port: 8050
-                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer2.livwell.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer2.livwell.com/tls/server.crt
-                - Host: orderer3.livwell.com
+                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer2.livwell.asia/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer2.livwell.asia/tls/server.crt
+                - Host: orderer3.livwell.asia
                   Port: 9050
-                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer3.livwell.com/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.com/orderers/orderer3.livwell.com/tls/server.crt
+                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer3.livwell.asia/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer3.livwell.asia/tls/server.crt
             Addresses:
-                - orderer.livwell.com:7050
-                - orderer2.livwell.com:8050
-                - orderer3.livwell.com:9050
+                - orderer.livwell.asia:7050
+                - orderer2.livwell.asia:8050
+                - orderer3.livwell.asia:9050
             Organizations:
             - *OrdererOrg
             Capabilities:
@@ -309,4 +309,4 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                - *allparticipants
+                - *care

@@ -1,6 +1,6 @@
 channel-artifacts/*
 crypto-config/*
-!channel-artifacts/.gitignore
-!crypto-config/.gitignore
+!channel-artifacts/.gitkeep
+!crypto-config/.gitkeep
 scripts/log.txt
 scripts/*.block

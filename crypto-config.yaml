@@ -1,13 +1,13 @@
 OrdererOrgs:
   - Name: Orderer
-    Domain: livwell.com
+    Domain: livwell.asia
     Specs:
       - Hostname: orderer
       - Hostname: orderer2
       - Hostname: orderer3
 PeerOrgs:
-  - Name: allparticipants
-    Domain: allparticipants.livwell.com
+  - Name: care
+    Domain: care.livwell.asia
     EnableNodeOUs: true
     Template:
         Count: 2
