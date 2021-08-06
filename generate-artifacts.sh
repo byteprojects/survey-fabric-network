@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=${PWD}/bin:$PATH
+export PATH=${PWD}/bin/arm64:$PATH
 export CHANNEL_NAME=wellness
 export CHANNEL_ID=system-channel
 export ORDERER_PROFILE=OrdererGenesis

@@ -14,6 +14,7 @@ networks:
 
 services:
   ca.livwell.asia:
+    platform: linux/x86_64
     container_name: ca.livwell.asia
     hostname: ca.livwell.asia
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
@@ -37,6 +38,7 @@ services:
       - wellness_network
   
   ca.care.livwell.asia:
+    platform: linux/x86_64
     container_name: ca.care.livwell.asia
     hostname: ca.care.livwell.asia
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
@@ -59,6 +61,7 @@ services:
       - wellness_network
 
   peer0.care.livwell.asia:
+    platform: linux/x86_64
     container_name: peer0.care.livwell.asia
     hostname: peer0.care.livwell.asia
     image: hyperledger/fabric-peer:$IMAGE_TAG
@@ -105,6 +108,7 @@ services:
       - wellness_network
   
   peer1.care.livwell.asia:
+    platform: linux/x86_64
     container_name: peer1.care.livwell.asia
     hostname: peer1.care.livwell.asia
     image: hyperledger/fabric-peer:$IMAGE_TAG
@@ -151,6 +155,7 @@ services:
       - wellness_network
 
   couchdb.peer0.care.livwell.asia:
+    platform: linux/x86_64
     container_name: couchdb.peer0.care.livwell.asia
     hostname: couchdb.peer0.care.livwell.asia
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
@@ -165,6 +170,7 @@ services:
       - wellness_network
   
   couchdb.peer1.care.livwell.asia:
+    platform: linux/x86_64
     container_name: couchdb.peer1.care.livwell.asia
     hostname: couchdb.peer1.care.livwell.asia
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
@@ -181,6 +187,7 @@ services:
       - wellness_network
 
   orderer.livwell.asia:
+    platform: linux/x86_64
     container_name: orderer.livwell.asia
     hostname: orderer.livwell.asia
     image: hyperledger/fabric-orderer:$IMAGE_TAG
@@ -220,6 +227,7 @@ services:
       - wellness_network
   
   orderer2.livwell.asia:
+    platform: linux/x86_64
     container_name: orderer2.livwell.asia
     hostname: orderer2.livwell.asia
     image: hyperledger/fabric-orderer:$IMAGE_TAG
@@ -258,6 +266,7 @@ services:
       - wellness_network
   
   orderer3.livwell.asia:
+    platform: linux/x86_64
     container_name: orderer3.livwell.asia
     hostname: orderer3.livwell.asia
     image: hyperledger/fabric-orderer:$IMAGE_TAG
@@ -296,6 +305,7 @@ services:
       - wellness_network
 
   cli.care.livwell.asia:
+    platform: linux/x86_64
     container_name: cli.care.livwell.asia
     hostname: cli.care.livwell.asia
     image: hyperledger/fabric-tools:$IMAGE_TAG
