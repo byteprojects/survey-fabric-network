@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export PATH=${PWD}/bin:$PATH
-export CHANNEL_NAME=suevey_channel
+export CHANNEL_NAME=survey_channel
 export CHANNEL_ID=system-channel
 export ORDERER_PROFILE=OrdererGenesis
 export CHANNEL_PROFILE=ChannelGenesis
