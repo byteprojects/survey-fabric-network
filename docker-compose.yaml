@@ -12,7 +12,7 @@ networks:
 
 services:
   ca.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: ca.themenadesk.com
     hostname: ca.themenadesk.com
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
@@ -36,7 +36,7 @@ services:
       - survey_network
   
   ca.survey.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: ca.survey.themenadesk.com
     hostname: ca.survey.themenadesk.com
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
@@ -59,7 +59,7 @@ services:
       - survey_network
 
   peer0.survey.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: peer0.survey.themenadesk.com
     hostname: peer0.survey.themenadesk.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
@@ -106,7 +106,7 @@ services:
       - survey_network
   
   peer1.survey.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: peer1.survey.themenadesk.com
     hostname: peer1.survey.themenadesk.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
@@ -153,7 +153,7 @@ services:
       - survey_network
 
   couchdb.peer0.survey.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: couchdb.peer0.survey.themenadesk.com
     hostname: couchdb.peer0.survey.themenadesk.com
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
@@ -168,7 +168,7 @@ services:
       - survey_network
   
   couchdb.peer1.survey.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: couchdb.peer1.survey.themenadesk.com
     hostname: couchdb.peer1.survey.themenadesk.com
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
@@ -185,7 +185,7 @@ services:
       - survey_network
 
   orderer.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: orderer.themenadesk.com
     hostname: orderer.themenadesk.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
@@ -225,7 +225,7 @@ services:
       - survey_network
   
   orderer2.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: orderer2.themenadesk.com
     hostname: orderer2.themenadesk.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
@@ -264,7 +264,7 @@ services:
       - survey_network
   
   orderer3.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: orderer3.themenadesk.com
     hostname: orderer3.themenadesk.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
@@ -303,7 +303,7 @@ services:
       - survey_network
 
   cli.survey.themenadesk.com:
-    platform: linux/x86_64
+    # platform: linux/x86_64
     container_name: cli.survey.themenadesk.com
     hostname: cli.survey.themenadesk.com
     image: hyperledger/fabric-tools:$IMAGE_TAG
