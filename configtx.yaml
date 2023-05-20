@@ -19,7 +19,7 @@ Organizations:
         ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/livwell.asia/msp
+        MSPDir: crypto-config/ordererOrganizations/themenadesk.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -35,15 +35,15 @@ Organizations:
                 Type: Signature
                 Rule: "OR('OrdererMSP.admin')"
 
-    - &care
+    - &survey
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: careMSP
+        Name: surveyMSP
 
         # ID to load the MSP definition as
-        ID: careMSP
+        ID: surveyMSP
 
-        MSPDir: crypto-config/peerOrganizations/care.livwell.asia/msp
+        MSPDir: crypto-config/peerOrganizations/survey.themenadesk.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -51,23 +51,23 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('careMSP.admin', 'careMSP.peer', 'careMSP.client')"
+                Rule: "OR('surveyMSP.admin', 'surveyMSP.peer', 'surveyMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('careMSP.admin', 'careMSP.client')"
+                Rule: "OR('surveyMSP.admin', 'surveyMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('careMSP.admin')"
+                Rule: "OR('surveyMSP.admin')"
             Endorsement:
                 Type: Signature
-                Rule: "OR('careMSP.peer')"
+                Rule: "OR('surveyMSP.peer')"
 
         # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.care.livwell.asia
+            - Host: peer0.survey.themenadesk.com
               Port: 7051
 ################################################################################
 #
@@ -176,13 +176,13 @@ Orderer: &OrdererDefaults
 
     EtcdRaft:
         Consenters:
-        - Host: orderer.livwell.asia
+        - Host: orderer.themenadesk.com
           Port: 7050
-          ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
-          ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
+          ClientTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/tls/server.crt
 
     Addresses:
-        - orderer.livwell.asia:7050
+        - orderer.themenadesk.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -273,7 +273,7 @@ Profiles:
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *care
+                - *survey
             Capabilities:
                 <<: *ApplicationCapabilities
 
@@ -286,22 +286,22 @@ Profiles:
             OrdererType: etcdraft
             EtcdRaft:
                 Consenters:
-                - Host: orderer.livwell.asia
+                - Host: orderer.themenadesk.com
                   Port: 7050
-                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/server.crt
-                - Host: orderer2.livwell.asia
+                  ClientTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/tls/server.crt
+                - Host: orderer2.themenadesk.com
                   Port: 8050
-                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer2.livwell.asia/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer2.livwell.asia/tls/server.crt
-                - Host: orderer3.livwell.asia
+                  ClientTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer2.themenadesk.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer2.themenadesk.com/tls/server.crt
+                - Host: orderer3.themenadesk.com
                   Port: 9050
-                  ClientTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer3.livwell.asia/tls/server.crt
-                  ServerTLSCert: crypto-config/ordererOrganizations/livwell.asia/orderers/orderer3.livwell.asia/tls/server.crt
+                  ClientTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer3.themenadesk.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer3.themenadesk.com/tls/server.crt
             Addresses:
-                - orderer.livwell.asia:7050
-                - orderer2.livwell.asia:8050
-                - orderer3.livwell.asia:9050
+                - orderer.themenadesk.com:7050
+                - orderer2.themenadesk.com:8050
+                - orderer3.themenadesk.com:9050
             Organizations:
             - *OrdererOrg
             Capabilities:
@@ -309,4 +309,4 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                - *care
+                - *survey

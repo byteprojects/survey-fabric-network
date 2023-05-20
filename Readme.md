@@ -14,15 +14,15 @@ This project cotains all the essnetials to setup the hylerledger fabric network 
     docker-compose up -d
 
 ## Channel Setup
-    docker exec -it cli.care.livwell.asia bash
+    docker exec -it cli.survey.themenadesk.com bash
     cd scripts
     ./peer-channel-setup.sh
     ./installChaincode.sh
 
 ## To invoke/query a transaction
-    peer chaincode invoke -o orderer.livwell.asia:7050 --ordererTLSHostnameOverride orderer.livwell.asia --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/msp/tlscacerts/tlsca.livwell.asia-cert.pem -C wellness -n livwell_cc --peerAddresses peer0.care.livwell.asia:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.asia/peers/peer0.care.livwell.asia/tls/ca.crt -c '{"function": "initMarble","Args":["marble1", "blue", "35", "tom"]}'
+    peer chaincode invoke -o orderer.themenadesk.com:7050 --ordererTLSHostnameOverride orderer.themenadesk.com --tls true --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/msp/tlscacerts/tlsca.themenadesk.com-cert.pem -C wellness -n survey_cc --peerAddresses peer0.survey.themenadesk.com:7051 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/tls/ca.crt -c '{"function": "initMarble","Args":["marble1", "blue", "35", "tom"]}'
 
-    peer chaincode query -C wellness -n livwell_cc -c '{"Args":["readMarble","marble1"]}'
+    peer chaincode query -C wellness -n survey_cc -c '{"Args":["readMarble","marble1"]}'
 
 ## To stop the network
     docker-compose down

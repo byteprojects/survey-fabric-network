@@ -1,13 +1,13 @@
 OrdererOrgs:
   - Name: Orderer
-    Domain: livwell.asia
+    Domain: themenadesk.com
     Specs:
       - Hostname: orderer
       - Hostname: orderer2
       - Hostname: orderer3
 PeerOrgs:
-  - Name: care
-    Domain: care.livwell.asia
+  - Name: survey
+    Domain: survey.themenadesk.com
     EnableNodeOUs: true
     Template:
         Count: 2

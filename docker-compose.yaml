@@ -1,11 +1,11 @@
 version: '2'
 
 volumes:
-  peer0.care.livwell.asia:
-  peer1.care.livwell.asia:
-  orderer.livwell.asia:
-  orderer2.livwell.asia:
-  orderer3.livwell.asia:
+  peer0.survey.themenadesk.com:
+  peer1.survey.themenadesk.com:
+  orderer.themenadesk.com:
+  orderer2.themenadesk.com:
+  orderer3.themenadesk.com:
   
 networks:
     wellness_network:
@@ -13,57 +13,57 @@ networks:
         name: wellness_network
 
 services:
-  ca.livwell.asia:
+  ca.themenadesk.com:
     platform: linux/x86_64
-    container_name: ca.livwell.asia
-    hostname: ca.livwell.asia
+    container_name: ca.themenadesk.com
+    hostname: ca.themenadesk.com
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
     environment: 
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.livwell.asia
+      - FABRIC_CA_SERVER_CA_NAME=ca.themenadesk.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_CSR_HOSTS=ca.livwell.asia, localhost
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/ca.livwell.asia-cert.pem
+      - FABRIC_CA_SERVER_CSR_HOSTS=ca.themenadesk.com, localhost
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/ca.themenadesk.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/priv_sk
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/tlsca.livwell.asia-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/tlsca.themenadesk.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
       - FABRIC_CA_SERVER_PORT=7054
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d '
     volumes:
-      - ./crypto-config/ordererOrganizations/livwell.asia/ca/:/etc/hyperledger/fabric-ca-server
-      - ./crypto-config/ordererOrganizations/livwell.asia/tlsca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/ordererOrganizations/themenadesk.com/ca/:/etc/hyperledger/fabric-ca-server
+      - ./crypto-config/ordererOrganizations/themenadesk.com/tlsca/:/etc/hyperledger/fabric-ca-server-config
     networks:
       - wellness_network
   
-  ca.care.livwell.asia:
+  ca.survey.themenadesk.com:
     platform: linux/x86_64
-    container_name: ca.care.livwell.asia
-    hostname: ca.care.livwell.asia
+    container_name: ca.survey.themenadesk.com
+    hostname: ca.survey.themenadesk.com
     image: hyperledger/fabric-ca:$CA_IMAGE_TAG
     environment: 
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.care.livwell.asia
+      - FABRIC_CA_SERVER_CA_NAME=ca.survey.themenadesk.com
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_PORT=8054
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/ca.care.livwell.asia-cert.pem
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/ca.survey.themenadesk.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/priv_sk
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/tlsca.care.livwell.asia-cert.pem
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/tlsca.survey.themenadesk.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/priv_sk
     ports:
       - "8054:8054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d '
     volumes:
-      - ./crypto-config/peerOrganizations/care.livwell.asia/ca/:/etc/hyperledger/fabric-ca-server
-      - ./crypto-config/peerOrganizations/care.livwell.asia/tlsca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/survey.themenadesk.com/ca/:/etc/hyperledger/fabric-ca-server
+      - ./crypto-config/peerOrganizations/survey.themenadesk.com/tlsca/:/etc/hyperledger/fabric-ca-server-config
     networks:
       - wellness_network
 
-  peer0.care.livwell.asia:
+  peer0.survey.themenadesk.com:
     platform: linux/x86_64
-    container_name: peer0.care.livwell.asia
-    hostname: peer0.care.livwell.asia
+    container_name: peer0.survey.themenadesk.com
+    hostname: peer0.survey.themenadesk.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -80,26 +80,26 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
        # Allow more time for chaincode container to build on install.
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
-      - CORE_PEER_ID=peer0.care.livwell.asia
-      - CORE_PEER_ADDRESS=peer0.care.livwell.asia:7051
+      - CORE_PEER_ID=peer0.survey.themenadesk.com
+      - CORE_PEER_ADDRESS=peer0.survey.themenadesk.com:7051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.care.livwell.asia:7053
+      - CORE_PEER_CHAINCODEADDRESS=peer0.survey.themenadesk.com:7053
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7053
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.care.livwell.asia:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.care.livwell.asia:8051
-      - CORE_PEER_LOCALMSPID=careMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.survey.themenadesk.com:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.survey.themenadesk.com:8051
+      - CORE_PEER_LOCALMSPID=surveyMSP
       # Setting-up CouchDB as State Database
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.care.livwell.asia:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.survey.themenadesk.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0_admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer0_adminpw
       - CORE_METRICS_PROVIDER=prometheus
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/care.livwell.asia/peers/peer0.care.livwell.asia/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/care.livwell.asia/peers/peer0.care.livwell.asia/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
-        - peer0.care.livwell.asia:/var/hyperledger/production
+        - peer0.survey.themenadesk.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -107,10 +107,10 @@ services:
     networks:
       - wellness_network
   
-  peer1.care.livwell.asia:
+  peer1.survey.themenadesk.com:
     platform: linux/x86_64
-    container_name: peer1.care.livwell.asia
-    hostname: peer1.care.livwell.asia
+    container_name: peer1.survey.themenadesk.com
+    hostname: peer1.survey.themenadesk.com
     image: hyperledger/fabric-peer:$IMAGE_TAG
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -127,26 +127,26 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
        # Allow more time for chaincode container to build on install.
       - CORE_CHAINCODE_EXECUTETIMEOUT=300s
-      - CORE_PEER_ID=peer1.care.livwell.asia
-      - CORE_PEER_ADDRESS=peer1.care.livwell.asia:8051
+      - CORE_PEER_ID=peer1.survey.themenadesk.com
+      - CORE_PEER_ADDRESS=peer1.survey.themenadesk.com:8051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
-      - CORE_PEER_CHAINCODEADDRESS=peer1.care.livwell.asia:8053
+      - CORE_PEER_CHAINCODEADDRESS=peer1.survey.themenadesk.com:8053
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8053
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.care.livwell.asia:8051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.care.livwell.asia:7051
-      - CORE_PEER_LOCALMSPID=careMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.survey.themenadesk.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.survey.themenadesk.com:7051
+      - CORE_PEER_LOCALMSPID=surveyMSP
       # Setting-up CouchDB as State Database
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.care.livwell.asia:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.survey.themenadesk.com:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer1_admin
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=peer1_adminpw
       - CORE_METRICS_PROVIDER=prometheus
     volumes:
         - /var/run/:/host/var/run/
-        - ./crypto-config/peerOrganizations/care.livwell.asia/peers/peer1.care.livwell.asia/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/care.livwell.asia/peers/peer1.care.livwell.asia/tls:/etc/hyperledger/fabric/tls
+        - ./crypto-config/peerOrganizations/survey.themenadesk.com/peers/peer1.survey.themenadesk.com/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/survey.themenadesk.com/peers/peer1.survey.themenadesk.com/tls:/etc/hyperledger/fabric/tls
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
-        - peer1.care.livwell.asia:/var/hyperledger/production
+        - peer1.survey.themenadesk.com:/var/hyperledger/production
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
@@ -154,10 +154,10 @@ services:
     networks:
       - wellness_network
 
-  couchdb.peer0.care.livwell.asia:
+  couchdb.peer0.survey.themenadesk.com:
     platform: linux/x86_64
-    container_name: couchdb.peer0.care.livwell.asia
-    hostname: couchdb.peer0.care.livwell.asia
+    container_name: couchdb.peer0.survey.themenadesk.com
+    hostname: couchdb.peer0.survey.themenadesk.com
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
     environment:
       - COUCHDB_USER=peer0_admin
@@ -169,10 +169,10 @@ services:
     networks:
       - wellness_network
   
-  couchdb.peer1.care.livwell.asia:
+  couchdb.peer1.survey.themenadesk.com:
     platform: linux/x86_64
-    container_name: couchdb.peer1.care.livwell.asia
-    hostname: couchdb.peer1.care.livwell.asia
+    container_name: couchdb.peer1.survey.themenadesk.com
+    hostname: couchdb.peer1.survey.themenadesk.com
     image: hyperledger/fabric-couchdb:$COUCHDB_TAG
     # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
     # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
@@ -186,10 +186,10 @@ services:
     networks:
       - wellness_network
 
-  orderer.livwell.asia:
+  orderer.themenadesk.com:
     platform: linux/x86_64
-    container_name: orderer.livwell.asia
-    hostname: orderer.livwell.asia
+    container_name: orderer.themenadesk.com
+    hostname: orderer.themenadesk.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     environment:
       - ORDERER_GENERAL_LOGLEVEL=info
@@ -215,9 +215,9 @@ services:
       - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:8443
     volumes:
         - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-        - ./crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/msp:/var/hyperledger/orderer/msp
-        - ./crypto-config/ordererOrganizations/livwell.asia/orderers/orderer.livwell.asia/tls/:/var/hyperledger/orderer/tls
-        - orderer.livwell.asia:/var/hyperledger/production/orderer
+        - ./crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer.themenadesk.com/tls/:/var/hyperledger/orderer/tls
+        - orderer.themenadesk.com:/var/hyperledger/production/orderer
     ports:
     - 7050:7050
     - 8443:8443
@@ -226,10 +226,10 @@ services:
     networks:
       - wellness_network
   
-  orderer2.livwell.asia:
+  orderer2.themenadesk.com:
     platform: linux/x86_64
-    container_name: orderer2.livwell.asia
-    hostname: orderer2.livwell.asia
+    container_name: orderer2.themenadesk.com
+    hostname: orderer2.themenadesk.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -254,9 +254,9 @@ services:
       - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:8444
     volumes:
         - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-        - ./crypto-config/ordererOrganizations/livwell.asia/orderers/orderer2.livwell.asia/msp:/var/hyperledger/orderer/msp
-        - ./crypto-config/ordererOrganizations/livwell.asia/orderers/orderer2.livwell.asia/tls/:/var/hyperledger/orderer/tls
-        - orderer2.livwell.asia:/var/hyperledger/production/orderer
+        - ./crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer2.themenadesk.com/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer2.themenadesk.com/tls/:/var/hyperledger/orderer/tls
+        - orderer2.themenadesk.com:/var/hyperledger/production/orderer
     ports:
     - 8050:8050
     - 8444:8444
@@ -265,10 +265,10 @@ services:
     networks:
       - wellness_network
   
-  orderer3.livwell.asia:
+  orderer3.themenadesk.com:
     platform: linux/x86_64
-    container_name: orderer3.livwell.asia
-    hostname: orderer3.livwell.asia
+    container_name: orderer3.themenadesk.com
+    hostname: orderer3.themenadesk.com
     image: hyperledger/fabric-orderer:$IMAGE_TAG
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -293,9 +293,9 @@ services:
       - ORDERER_OPERATIONS_LISTENADDRESS=0.0.0.0:8445
     volumes:
         - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-        - ./crypto-config/ordererOrganizations/livwell.asia/orderers/orderer3.livwell.asia/msp:/var/hyperledger/orderer/msp
-        - ./crypto-config/ordererOrganizations/livwell.asia/orderers/orderer3.livwell.asia/tls/:/var/hyperledger/orderer/tls
-        - orderer3.livwell.asia:/var/hyperledger/production/orderer
+        - ./crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer3.themenadesk.com/msp:/var/hyperledger/orderer/msp
+        - ./crypto-config/ordererOrganizations/themenadesk.com/orderers/orderer3.themenadesk.com/tls/:/var/hyperledger/orderer/tls
+        - orderer3.themenadesk.com:/var/hyperledger/production/orderer
     ports:
     - 9050:9050
     - 8445:8445
@@ -304,10 +304,10 @@ services:
     networks:
       - wellness_network
 
-  cli.care.livwell.asia:
+  cli.survey.themenadesk.com:
     platform: linux/x86_64
-    container_name: cli.care.livwell.asia
-    hostname: cli.care.livwell.asia
+    container_name: cli.survey.themenadesk.com
+    hostname: cli.survey.themenadesk.com
     image: hyperledger/fabric-tools:$IMAGE_TAG
     tty: true
     stdin_open: true
@@ -316,13 +316,13 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=INFO
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.care.livwell.asia:7051
-      - CORE_PEER_LOCALMSPID=careMSP
+      - CORE_PEER_ADDRESS=peer0.survey.themenadesk.com:7051
+      - CORE_PEER_LOCALMSPID=surveyMSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.asia/peers/peer0.care.livwell.asia/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.asia/peers/peer0.care.livwell.asia/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.asia/peers/peer0.care.livwell.asia/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/care.livwell.asia/users/Admin@care.livwell.asia/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/survey.themenadesk.com/users/Admin@survey.themenadesk.com/msp
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=wellness_network
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
@@ -332,10 +332,10 @@ services:
       - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
       - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
     depends_on:
-      - ca.care.livwell.asia
-      - peer0.care.livwell.asia
-      - peer1.care.livwell.asia
-      - couchdb.peer0.care.livwell.asia
-      - couchdb.peer1.care.livwell.asia
+      - ca.survey.themenadesk.com
+      - peer0.survey.themenadesk.com
+      - peer1.survey.themenadesk.com
+      - couchdb.peer0.survey.themenadesk.com
+      - couchdb.peer1.survey.themenadesk.com
     networks:
       - wellness_network
