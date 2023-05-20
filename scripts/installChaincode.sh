@@ -8,7 +8,7 @@ setChaincodeConfig() {
     export CC_NAME=survey_cc;
     export PACKAGE_NAME=survey-chaincode
 	export CC_SRC_PATH=/opt/gopath/src/github.com/$PACKAGE_NAME;
-	export CHANNEL_NAME="survey_channel";
+	export CHANNEL_NAME="surveychannel";
     export VERSION=${1:-"1.0"}
     export SEQUENCE_NO=${2:-"1"}
     export CORE_PEER_TLS_ENABLED=true

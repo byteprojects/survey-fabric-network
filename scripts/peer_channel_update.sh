@@ -3,7 +3,7 @@
 echo
 echo "Setting Up Hyperledger Fabric Network"
 echo
-export CHANNEL_NAME="survey_channel"
+export CHANNEL_NAME="surveychannel"
 export DELAY=5
 export TIMEOUT="15"
 export VERBOSE=false
