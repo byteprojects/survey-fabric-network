@@ -4,7 +4,7 @@ export BASE_PATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
 setChaincodeConfig() {  
 	# Setting-up chaincode config
     export FABRIC_CFG_PATH=/etc/hyperledger/fabric/
-	export CC_RUNTIME_LANGUAGE=golang; # either java, golang or node
+	export CC_RUNTIME_LANGUAGE=node; # either java, golang or node
     export CC_NAME=survey_cc;
     export PACKAGE_NAME=survey-chaincode
 	export CC_SRC_PATH=/opt/gopath/src/github.com/$PACKAGE_NAME;
@@ -45,10 +45,10 @@ packageChaincode() {
     echo $'\n'""$'\n'
     echo $'\n'"Info: Packging chaincode !"$'\n'
     
-    echo "Vendoring Go dependencies ..."
-	pushd $CC_SRC_PATH
-	GO111MODULE=on go mod vendor
-	popd
+	echo "Vendoring Go dependencies ..."
+	# pushd $CC_SRC_PATH
+	# GO111MODULE=on go mod vendor
+	# popd
 	echo "Finished vendoring Go dependencies"
     
     if ! peer lifecycle chaincode package ${CC_NAME}.tar.gz --path $CC_SRC_PATH --lang $CC_RUNTIME_LANGUAGE --label ${CC_NAME}_${VERSION}; then
