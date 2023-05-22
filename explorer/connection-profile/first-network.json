@@ -1,0 +1,59 @@
+{
+	"name": "first-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminCredential": {
+			"id": "exploreradmin",
+			"password": "exploreradminpw"
+		},
+		"enableAuthentication": true,
+		"organization": "surveyMSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"surveychannel": {
+			"peers": {
+				"peer0.survey.themenadesk.com": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"surveyMSP": {
+			"mspid": "surveyMSP",
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/peerOrganizations/survey.themenadesk.com/users/Admin@survey.themenadesk.com/msp/keystore/priv_sk"
+			},
+			"peers": [
+				"peer0.survey.themenadesk.com"
+			],
+			"signedCert": {
+				"path": "/tmp/crypto/peerOrganizations/survey.themenadesk.com/users/Admin@survey.themenadesk.com/msp/signcerts/Admin@survey.themenadesk.com-cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer0.survey.themenadesk.com": {
+			"tlsCACerts": {
+				"path": "/tmp/crypto/peerOrganizations/survey.themenadesk.com/peers/peer0.survey.themenadesk.com/tls/ca.crt"
+			},
+			"url": "grpcs://peer0.survey.themenadesk.com:7051"
+		}
+	}
+}
